@@ -92,7 +92,7 @@ class Format
       else
         dom(node).wrap(formatNode)
         node = formatNode
-    if _.isString(@config.style) or _.isString(@config.attribute) or _.isString(@config.class)
+    if _.isString(@config.style) or _.isString(@config.attribute) or _.isObject(@config.attributes) or _.isString(@config.class)
       if _.isString(@config.class)
         node = this.remove(node)
       if dom(node).isTextNode()
@@ -101,7 +101,19 @@ class Format
         node = inline
       if _.isString(@config.style)
         node.style[@config.style] = value if value != @config.default
-      if _.isString(@config.attribute)
+      if _.isObject(@config.attributes)
+        for a, v of @config.attributes
+          if _.isObject(value)
+            if _.isString(value[a])
+              node.setAttribute(a, value[a])
+            else
+              node.setAttribute(a, v)
+          else
+            if a == @config.attribute
+              node.setAttribute(a, value)
+            else
+              node.setAttribute(a, v)
+      else if _.isString(@config.attribute)
         node.setAttribute(@config.attribute, value)
       if _.isString(@config.class)
         dom(node).addClass(@config.class + value)
