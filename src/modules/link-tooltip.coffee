@@ -89,9 +89,7 @@ class LinkTooltip extends Tooltip
     return url
 
   _suggestURL: (range) ->
-    text = @quill.getText(range)
-    return this._normalizeURL(text)
-
+    return 'http://'
 
 Quill.registerModule('link-tooltip', LinkTooltip)
 module.exports = LinkTooltip
